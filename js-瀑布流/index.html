@@ -212,7 +212,11 @@
                 var innerHeight = window.innerHeight
                 //页面高度
                 var clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-                console.log(innerHeight,clientHeight)
+                /**
+                *innerHeight 与 clientHeight 一致
+                * */
+                console.log(innerHeight, clientHeight);
+
                 if(clientHeight + scrollTop > offsetTop){
                     console.log('加载');
                     for(var i=0;i<6;i++){
