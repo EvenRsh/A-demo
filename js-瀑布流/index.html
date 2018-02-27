@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+
+			}
+			#container{
+				position: relative;
+			}
+			.box{
+				float: left;
+				padding: 5px;
+			}
+			.box-img{
+				padding: 5px;
+				border: 1px solid #ccc;
+				box-shadow: 0 0 5px #ccc;
+				border-radius: 5px;
+			}
+			.box-img img{
+				width: 230px;
+				height: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container">
+			<div class="box">
+				<div class="box-img">
+					<img src="images/0.jpg">
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-img">
+					<img src="images/1.jpg">
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-img">
+					<img src="images/2.jpg">
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-img">
+					<img src="images/3.jpg">
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-img">
+					<img src="images/4.jpg">
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-img">
+					<img src="images/5.jpg">
+				</div>
+			</div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/0.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/1.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/2.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/3.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/4.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/5.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/0.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/1.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/2.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/3.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/4.jpg">
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-img">
+                    <img src="images/5.jpg">
+                </div>
+            </div>
+		</div>
+		<script type="text/javascript">
+		    window.addEventListener('load',() => {
+                imgLocation('box');
+                window.addEventListener('resize',()=>{
+                    imgLocation('box');
+                });
+                document.addEventListener('scroll',()=>{
+                    rollLoad('box');
+                });
+            });
+		    const oParent = document.querySelector('#container');
+		    /**
+             * 获取节点
+		    * */
+		    const getChilds = (chlid) => {
+		        var aTarget = document.getElementsByTagName('*');
+                const res = [];
+				([...aTarget]).forEach((current,index,arry)=>{
+				    if(current.className == chlid){
+                        res.push(current)
+                    }
+				});
+				return res
+			};
+            /**
+             *
+            * */
+		    const imgLocation = (chlid) => {
+                var aChild =  getChilds(chlid);
+                var imgWidth = aChild[0].offsetWidth;
+                //列 位运算取整数值
+                var num = ~~(document.documentElement.clientWidth / imgWidth);
+                //容器居中
+                oParent.style.cssText = 'width:'+imgWidth*num+'px;margin: 0 auto;'
+                var heightArr = [];
+                ([...aChild]).forEach((current,index) => {
+                    if(index < num){
+                        heightArr.push(current.offsetHeight);
+                        current.style = ''
+                    }else {
+                        current.style.position = 'absolute';
+                        var top = Math.min(...heightArr)
+                        var minIndex = minHeightIndex(heightArr).index;
+                        var left = aChild[minIndex].offsetLeft;
+                        current.style.top = top + 'px'
+                        current.style.left = left + 'px'
+                        heightArr[minIndex] +=  current.clientHeight
+//                         console.log(heightArr[minIndex])
+
+                    }
+                })
+//                console.log(heightArr)
+            }
+
+			const arr = [1,2,3,]
+			/**
+			 * 获取数组中最小值索引
+			 * reduce 不断更新对比的值
+			* */
+		    const minHeightIndex = (arr) => {
+                return arr.reduce((a,b,index,arry)=>{
+//                    console.log(a,b,index,arry);
+                    if(b<=a.val){
+                        a.val = b;
+                        a.index = index
+					}
+					return a
+				},{
+                    val:arr[0],
+					index:0
+				})
+			}
+//            console.log(minHeightIndex(arr));
+		    /**
+             * 滚动加载
+		    * */
+            const rollLoad = (chlid) =>{
+                //滚动条高度
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                //最后一条数据距离顶部的高度
+                var aChild =  getChilds(chlid);
+                var len =aChild.length;
+
+                var offsetTop = aChild[len-1].offsetTop;
+                //浏览器高度
+                var innerHeight = window.innerHeight
+                //页面高度
+                var clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+                console.log(innerHeight,clientHeight)
+                if(clientHeight + scrollTop > offsetTop){
+                    console.log('加载');
+                    for(var i=0;i<6;i++){
+                        if(len+i>27){
+                            imgLocation('box');
+                            return
+                        }
+                        var box =  document.createElement('div');
+                        var boxImg =  document.createElement('div');
+                        var img =  document.createElement('img');
+                        box.className = 'box';
+                        boxImg.className = 'box-img';
+                        img.src = 'images/'+(len+i)+'.jpg';
+                        boxImg.append(img)
+                        box.append(boxImg)
+                        oParent.append(box)
+                    }
+                    imgLocation('box');
+                }
+            }
+		</script>
+	</body>
+</html>
